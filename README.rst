@@ -62,6 +62,8 @@ __ https://wiki.archlinux.org/index.php/X_KeyBoard_extension#Keycode_translation
 Classes
 -------
 
+These all reside in ``xkbgroup/core.py``:
+
 * ``XKeyboard`` — the main class:
 
   - ``__init__(self, auto_open=True)`` — if ``auto_open`` is ``True``
@@ -79,7 +81,7 @@ Classes
     + ``group_symbol`` — get/set current group symbol
       (e.g. ``us``, ``ru``, ``fr``).
     + ``group_variant`` — get (only) current group variant
-      (e.g. `` ``, ``dos``, ``latin9``)
+      (e.g. `` ``, ``dos``, ``latin9``)
   - ``groups_*`` — properties for querying info about all groups set by
     ``setxkbmap``
 
@@ -89,3 +91,18 @@ Classes
     + ``groups_variants`` — get variants of all groups.
 
 * ``X11Error`` — an exception class, raised for errors on X server issues.
+
+
+Helper files
+------------
+
+There are also complementary files:
+
+* ``generate_bindings.sh`` — a shell script which generates Python bindings
+  to X server structures, functions and ``#define`` s definitions by:
+
+  - converting X11 C headers using ``h2xml`` and ``xml2py``;
+  - creating ``ctypes`` references to functions from ``libX11.so.6``.
+
+* ``xkbgroup/xkb.py`` — the output of the above script, usable for Xlib
+  development under Python.
