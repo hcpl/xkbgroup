@@ -2,6 +2,11 @@
 xkbgroup
 ========
 
+.. image:: https://img.shields.io/badge/python-3.2+-blue.svg
+
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+    :target: https://github.com/hcpl/xkbgroup/blob/master/LICENSE
+
 Use this library to change the keyboard layout through XKB extension (subsystem)
 of the X server system.
 

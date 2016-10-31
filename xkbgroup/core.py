@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from .xkb import *
 from ctypes import *
 from collections import namedtuple
