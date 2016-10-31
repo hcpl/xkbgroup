@@ -7,6 +7,8 @@ from collections import namedtuple
 from .xkb import *
 
 
+# Error-related utilities
+
 OPEN_DISPLAY_ERRORS = {
     XkbOD_BadLibraryVersion: "Compile-time and runtime XKB libraries not compatible",
     XkbOD_ConnectionRefused: "Display could not be opened",
@@ -33,13 +35,13 @@ GET_NAMES_ERRORS = {
 class X11Error(Exception):
     pass
 
-def ensure_type(obj, type):
+def _ensure_type(obj, type):
     if not isinstance(obj, type):
         raise ValueError("Wrong value type, must be {}.".format(str(type)))
 
 
 class XKeyboard:
-    # XKeyboard methods
+    # Main methods
 
     def __init__(self, auto_open=True):
         if auto_open:
@@ -67,7 +69,7 @@ class XKeyboard:
             raise X11Error("Failed to get keyboard description.")
 
         # Controls mask doesn't affect the availability of xkb->ctrls->num_groups anyway
-        # Just use a valid value, and xkb->ctrls-> will be definitely set
+        # Just use a valid value, and xkb->ctrls->num_groups will be definitely set
         status = XkbGetControls(self._display, XkbAllControlsMask, self._keyboard_description)
         if status != Success:
             self.close_display()
@@ -113,7 +115,7 @@ class XKeyboard:
 
             groups_count = 0
             while (groups_count < XkbNumKbdGroups and
-                   groups_source[groups_count] != _None):
+                   groups_source[groups_count] != None_):
                 groups_count += 1
 
             return groups_count
@@ -141,7 +143,7 @@ class XKeyboard:
 
     @group_num.setter
     def group_num(self, value):
-        ensure_type(value, int)
+        _ensure_type(value, int)
         if XkbLockGroup(self._display, XkbUseCoreKbd, value):
             XFlush(self._display)
         else:
@@ -155,7 +157,7 @@ class XKeyboard:
 
     @group_name.setter
     def group_name(self, value):
-        ensure_type(value, str)
+        _ensure_type(value, str)
         groups_names = self.groups_names
         n_mapping = {groups_names[i]: i for i in range(len(groups_names))}
         try:
@@ -171,7 +173,7 @@ class XKeyboard:
 
     @group_symbol.setter
     def group_symbol(self, value):
-        ensure_type(value, str)
+        _ensure_type(value, str)
         s_mapping = {symdata.symbol: symdata.index for symdata in self._symboldata_list}
         try:
             self.group_num = s_mapping[value]
@@ -202,15 +204,15 @@ class XKeyboard:
     @property
     def _symboldata_list(self):
         symbol_str_atom = self._symbols_source
-        if symbol_str_atom != _None:
+        if symbol_str_atom != None_:
             b_symbol_str = XGetAtomName(self._display, symbol_str_atom)
-            return parse_symbols(b_symbol_str.decode(), ["pc", "inet", "group"])
+            return _parse_symbols(b_symbol_str.decode(), ["pc", "inet", "group"])
         else:
             raise X11Error("Failed to get symbol names.")
 
     def _get_group_name_by_num(self, group_num):
         cur_group_atom = self._groups_source[group_num]
-        if cur_group_atom != _None:
+        if cur_group_atom != None_:
             b_group_name = XGetAtomName(self._display, cur_group_atom)
             return b_group_name.decode() if b_group_name else ""
         else:
@@ -243,7 +245,7 @@ class _Compat_SRE_Pattern:
 if sys.version_info < (3, 4):
     SYMBOL_REGEX = _Compat_SRE_Pattern(SYMBOL_REGEX)
 
-def parse_symbols(symbols_str, non_symbols, default_index=0):
+def _parse_symbols(symbols_str, non_symbols, default_index=0):
     def get_symboldata(symstr):
         match = SYMBOL_REGEX.fullmatch(symstr)
         if match:
@@ -265,6 +267,9 @@ def parse_symbols(symbols_str, non_symbols, default_index=0):
     assert len(indices) == len(set(indices))    # No doubles
 
     return symboldata_list
+
+
+__all__ = ["XKeyboard", "X11Error"]
 
 
 def print_xkeyboard(xkb):

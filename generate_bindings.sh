@@ -10,15 +10,15 @@ xml2py -k defst -o xkb.py -l X11 xkb.xml
 # Stop interpreter from crying
 
 # P.S. X.h has None and Xlib.h has True and False #defines
-# To use them without overlapping with the Python keywords just add underscore
-# before, like _None, _True and _False
+# To use them without overlapping with the Python keywords just add trailing
+# underscores, like None_, True_ and False_
 
-sed -i "s/^None /_None /" xkb.py
-sed -i "s/'None'/'_None'/" xkb.py
-sed -i "s/^True /_True /" xkb.py
-sed -i "s/'True'/'_True'/" xkb.py
-sed -i "s/^False /_False /" xkb.py
-sed -i "s/'False'/'_False'/" xkb.py
+sed -i "s/^None /None_ /" xkb.py
+sed -i "s/'None'/'None_'/" xkb.py
+sed -i "s/^True /True_ /" xkb.py
+sed -i "s/'True'/'True_'/" xkb.py
+sed -i "s/^False /False_ /" xkb.py
+sed -i "s/'False'/'False_'/" xkb.py
 sed -i 's/\( = [0-9]\+\)L/\1/g' xkb.py
 
 

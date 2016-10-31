@@ -10,15 +10,15 @@
 # # Stop interpreter from crying
 #
 # # P.S. X.h has None and Xlib.h has True and False #defines
-# # To use them without overlapping with the Python keywords just add underscore
-# # before, like _None, _True and _False
+# # To use them without overlapping with the Python keywords just add trailing
+# # underscores, like None_, True_ and False_
 #
-# sed -i "s/^None /_None /" xkb.py
-# sed -i "s/'None'/'_None'/" xkb.py
-# sed -i "s/^True /_True /" xkb.py
-# sed -i "s/'True'/'_True'/" xkb.py
-# sed -i "s/^False /_False /" xkb.py
-# sed -i "s/'False'/'_False'/" xkb.py
+# sed -i "s/^None /None_ /" xkb.py
+# sed -i "s/'None'/'None_'/" xkb.py
+# sed -i "s/^True /True_ /" xkb.py
+# sed -i "s/'True'/'True_'/" xkb.py
+# sed -i "s/^False /False_ /" xkb.py
+# sed -i "s/'False'/'False_'/" xkb.py
 # sed -i 's/\( = [0-9]\+\)L/\1/g' xkb.py
 #
 #
@@ -405,7 +405,7 @@ Mod2MapIndex = 4 # Variable c_int '4'
 X_GetSelectionOwner = 23 # Variable c_int '23'
 ENOPROTOOPT = 92 # Variable c_int '92'
 BadIDChoice = 14 # Variable c_int '14'
-_True = 1 # Variable c_int '1'
+True_ = 1 # Variable c_int '1'
 XNPreeditDrawCallback = 'preeditDrawCallback' # Variable STRING '(const char*)"preeditDrawCallback"'
 X_CopyPlane = 63 # Variable c_int '63'
 sz_xPolyRectangleReq = 12 # Variable c_int '12'
@@ -849,7 +849,7 @@ XIMStringConversionRightEdge = 2 # Variable c_int '2'
 XkbLC_AlphanumericKeys = 256 # Variable c_long '256l'
 CWBorderPixmap = 4 # Variable c_long '4l'
 XkbNumKbdGroups = 4 # Variable c_int '4'
-_None = 0 # Variable c_long '0l'
+None_ = 0 # Variable c_long '0l'
 X_AllocColorCells = 86 # Variable c_int '86'
 XkbMaxRadioGroups = 32 # Variable c_int '32'
 DisableScreenInterval = 0 # Variable c_int '0'
@@ -1099,7 +1099,7 @@ ParentRelative = 1 # Variable c_long '1l'
 EMSGSIZE = 90 # Variable c_int '90'
 X_PROTOCOL = 11 # Variable c_int '11'
 sz_xConvertSelectionReq = 24 # Variable c_int '24'
-_False = 0 # Variable c_int '0'
+False_ = 0 # Variable c_int '0'
 sz_xSetSelectionOwnerReq = 16 # Variable c_int '16'
 EREMOTEIO = 121 # Variable c_int '121'
 XkbXINone = 65280 # Variable c_int '65280'
@@ -8666,7 +8666,7 @@ __all__ = ['XUnlockDisplay', 'ETXTBSY', '_XEventToWire',
            'XOMOrientation_RTL_TTB', '__nlink_t', 'ffsll',
            'X_GetSelectionOwner', 'ENOPROTOOPT', '_XAsyncHandler',
            'BadIDChoice', 'XCheckTypedWindowEvent', 'XPropertyEvent',
-           'xGetPointerControlReply', '_True', 'XCloseDisplay',
+           'xGetPointerControlReply', 'True_', 'XCloseDisplay',
            'XClearArea', 'XNPreeditDrawCallback', 'XCreateGC',
            'xQueryBestSizeReq', 'XkbNoteControlsChanges',
            'X_CopyPlane', 'XDefaultScreenOfDisplay', 'realloc',
@@ -8993,7 +8993,7 @@ __all__ = ['XUnlockDisplay', 'ETXTBSY', '_XEventToWire',
            'X_LookupColor', '__GLIBC_MINOR__',
            'XIMStringConversionRightEdge', 'XkbLC_AlphanumericKeys',
            'XDestroySubwindows', 'strncpy', 'CWBorderPixmap',
-           'XkbNumKbdGroups', '_None', 'X_AllocColorCells',
+           'XkbNumKbdGroups', 'None_', 'X_AllocColorCells',
            'XkbMaxRadioGroups', 'XExtendedMaxRequestSize',
            '__pthread_internal_list', 'DisableScreenInterval', 'labs',
            'XESetWireToEvent', 'xGetKeyboardControlReply',
@@ -9183,7 +9183,7 @@ __all__ = ['XUnlockDisplay', 'ETXTBSY', '_XEventToWire',
            'X_kbPerClientFlags', 'XkbGetMapChanges', 'ParentRelative',
            'EMSGSIZE', 'XkbSwitchScreenAction', 'X_PROTOCOL',
            'sz_xConvertSelectionReq', 'xGrabKeyboardReq',
-           'xUngrabButtonReq', '_False', 'sz_xSetSelectionOwnerReq',
+           'xUngrabButtonReq', 'False_', 'sz_xSetSelectionOwnerReq',
            'EREMOTEIO', 'XkbXINone', 'X_kbGetIndicatorState',
            'xSetModifierMappingReply', '_XkbKeyAliasRec',
            '_BITS_TYPESIZES_H', 'XNRequiredCharSet',
