@@ -6,6 +6,49 @@ Use this library to change the keyboard layout through XKB extension (subsystem)
 of the X server system.
 
 
+Usage
+-----
+
+.. code-block:: sh
+
+   # Assume we have the following configuration
+   $ setxkbmap -layout us,ru,ua,fr
+   $ python
+
+.. code-block:: python
+
+   >>> from xkbgroup import XKeyboard
+   >>> xkb = XKeyboard()
+   >>> xkb.group_num
+   1
+   >>> xkb.group_num = 2
+   >>> xkb.group_num
+   2
+   >>> xkb.group_num -= 2
+   >>> xkb.group_num
+   0
+   >>> xkb.group_name
+   English (US)
+   >>> xkb.group_name = 'Ukrainian'
+   >>> xkb.group_name
+   Ukrainian
+   >>> xkb.group_num
+   2
+   >>> xkb.group_symbol
+   ua
+   >>> xkb.group_symbol = 'fr'
+   >>> xkb.group_symbol
+   fr
+   >>> xkb.group_variant
+   ''
+   >>> xkb.group_num -= 3
+   >>> xkb.group_variant
+   ''
+   >>> xkb.group_num
+   0
+   >>>
+
+
 Naming convention
 -----------------
 
