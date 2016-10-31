@@ -11,6 +11,14 @@ Use this library to change the keyboard layout through XKB extension (subsystem)
 of the X server system.
 
 
+Dependencies
+------------
+
+* Python 3.2+
+* ``libX11.so.6`` shared library which you must have by default if you use
+  X server
+
+
 Usage
 -----
 
