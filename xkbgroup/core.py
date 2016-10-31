@@ -3,6 +3,7 @@ from ctypes import *
 from collections import namedtuple
 
 import re
+import sys
 
 
 OPEN_DISPLAY_ERRORS = {
@@ -238,7 +239,8 @@ class _Compat_SRE_Pattern:
             return None
         return match
 
-SYMBOL_REGEX = _Compat_SRE_Pattern(SYMBOL_REGEX)
+if sys.version_info < (3, 4):
+    SYMBOL_REGEX = _Compat_SRE_Pattern(SYMBOL_REGEX)
 
 def parse_symbols(symbols_str, non_symbols, default_index=0):
     def get_symboldata(symstr):
