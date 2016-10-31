@@ -73,8 +73,7 @@ class XKeyboard:
             self.close_display()
             raise X11Error(GET_CONTROLS_ERRORS[status] + ".")
 
-        #names_mask = XkbSymbolsNameMask | XkbGroupNamesMask
-        names_mask = XkbAllNamesMask
+        names_mask = XkbSymbolsNameMask | XkbGroupNamesMask
         status = XkbGetNames(self._display, names_mask, self._keyboard_description)
         if status != Success:
             self.close_display()
