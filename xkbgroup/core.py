@@ -222,6 +222,24 @@ SYMBOL_REGEX = re.compile(r"""
     (?: : (?P<index>\d+) )?
     """, re.VERBOSE)
 
+class _Compat_SRE_Pattern:
+    def __init__(self, re_obj):
+        self.re_obj = re_obj
+
+    def __getattr__(self, name):
+        return getattr(self.re_obj, name)
+
+    # re_obj.fullmatch is a Python 3.4+ only feature
+    def fullmatch(self, string, pos=None, endpos=None):
+        pos = pos if pos else 0
+        endpos = endpos if endpos else len(string)
+        match = self.re_obj.match(string, pos, endpos)
+        if match and match.span() != (pos, endpos):
+            return None
+        return match
+
+SYMBOL_REGEX = _Compat_SRE_Pattern(SYMBOL_REGEX)
+
 def parse_symbols(symbols_str, non_symbols, default_index=0):
     def get_symboldata(symstr):
         match = SYMBOL_REGEX.fullmatch(symstr)
