@@ -1,9 +1,10 @@
-from .xkb import *
+import re
+import sys
+
 from ctypes import *
 from collections import namedtuple
 
-import re
-import sys
+from .xkb import *
 
 
 OPEN_DISPLAY_ERRORS = {
