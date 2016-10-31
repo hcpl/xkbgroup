@@ -115,7 +115,8 @@ There are also complementary files:
   to X server structures, functions and ``#define`` definitions by:
 
   - converting X11 C headers using ``h2xml`` and ``xml2py``;
-  - creating ``ctypes`` references to functions from ``libX11.so.6``.
+  - creating ``ctypes`` references to functions from ``libX11.so.6`` using
+    ``xml2py``.
 
 * ``xkbgroup/xkb.py`` — the output of the above script, usable for Xlib
   development under Python.
