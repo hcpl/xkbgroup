@@ -99,7 +99,7 @@ Helper files
 There are also complementary files:
 
 * ``generate_bindings.sh`` — a shell script which generates Python bindings
-  to X server structures, functions and ``#define`` s definitions by:
+  to X server structures, functions and ``#define`` definitions by:
 
   - converting X11 C headers using ``h2xml`` and ``xml2py``;
   - creating ``ctypes`` references to functions from ``libX11.so.6``.
