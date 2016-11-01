@@ -39,12 +39,15 @@ Usage
 
    # Assume we have the following configuration
    $ setxkbmap -layout us,ru,ua,fr
+   # Change layout once before calling python
    $ python
 
 .. code-block:: python
 
    >>> from xkbgroup import XKeyboard
    >>> xkb = XKeyboard()
+   >>> xkb.groups_count
+   4
    >>> xkb.group_num
    1
    >>> xkb.group_num = 2
@@ -53,18 +56,24 @@ Usage
    >>> xkb.group_num -= 2
    >>> xkb.group_num
    0
+   >>> xkb.groups_names
+   ['English (US)', 'Russian', 'Ukrainian', 'French']
    >>> xkb.group_name
-   English (US)
+   'English (US)'
    >>> xkb.group_name = 'Ukrainian'
    >>> xkb.group_name
-   Ukrainian
+   'Ukrainian'
    >>> xkb.group_num
    2
+   >>> xkb.groups_symbols
+   ['us', 'ru', 'ua', 'fr']
    >>> xkb.group_symbol
-   ua
+   'ua'
    >>> xkb.group_symbol = 'fr'
    >>> xkb.group_symbol
-   fr
+   'fr'
+   >>> xkb.groups_variants
+   ['', '', '', '']
    >>> xkb.group_variant
    ''
    >>> xkb.group_num -= 3
