@@ -8,7 +8,7 @@ xkbgroup
     :target: https://github.com/hcpl/xkbgroup/blob/master/LICENSE
 
 Use this library to change the keyboard layout through XKB extension (subsystem)
-of the X server system.
+of the X server system. Both library and command line script included.
 
 
 .. contents:: **Table of Contents**
@@ -35,8 +35,8 @@ __ https://pypi.python.org/pypi/xkbgroup
     pip install xkbgroup
 
 
-Usage
------
+Library usage
+-------------
 
 .. code-block:: sh
 
@@ -85,6 +85,26 @@ Usage
    >>> xkb.group_num
    0
    >>>
+
+
+Command line features mapping
+-----------------------------
+
+===============================  ================================
+            Library                        Command line
+===============================  ================================
+xkb.group_num                    xkbgroup get num
+xkb.group_num = 2                xkbgroup set num 2
+xkb.group_name                   xkbgroup get name
+xkb.group_name = 'English (US)'  xkbgroup set name 'English (US)'
+xkb.group_symbol                 xkbgroup get symbol
+xkb.group_symbol = 'fr'          xkbgroup set symbol 'fr'
+xkb.group_variant                xkbgroup get variant
+xkb.groups_count                 xkbgroup get count
+xkb.groups_names                 xkbgroup get names
+xkb.groups_symbols               xkbgroup get symbols
+xkb.groups_variants              xkbgroup get variants
+===============================  ================================
 
 
 Naming convention

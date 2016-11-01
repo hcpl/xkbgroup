@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name="xkbgroup",
-    version="0.1",
+    version="0.1.1",
     description="Query and change XKB layout state",
     author="Nguyen Duc My",
     author_email="hcpl.prog@gmail.com",
@@ -31,4 +31,9 @@ setup(
         "Topic :: Desktop Environment :: Window Managers",
         "Topic :: Software Development :: Libraries"
     ],
+    entry_points={
+        "console_scripts": [
+            "xkbgroup = xkbgroup.__main__:main"
+        ]
+    },
 )
