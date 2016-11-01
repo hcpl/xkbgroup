@@ -37,7 +37,8 @@ def xkb_set(args, xkb):
 
 def create_argument_parser():
     parser = ArgumentParser()
-    subparsers = parser.add_subparsers(title="actions")
+    subparsers = parser.add_subparsers(title="actions", dest="cmd")
+    subparsers.required = True
 
     parser_get = subparsers.add_parser("get")
     parser_get.set_defaults(func=xkb_get)
