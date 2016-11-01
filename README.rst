@@ -11,6 +11,9 @@ Use this library to change the keyboard layout through XKB extension (subsystem)
 of the X server system.
 
 
+.. contents:: **Table of Contents**
+
+
 Dependencies
 ------------
 
