@@ -19,6 +19,19 @@ Dependencies
   X server
 
 
+Installation
+------------
+
+From PyPI package xkbgroup__
+++++++++++++++++++++++++++++
+
+__ https://pypi.python.org/pypi/xkbgroup
+
+.. code-block:: sh
+
+    pip install xkbgroup
+
+
 Usage
 -----
 

@@ -1,6 +1,10 @@
-__pycache__
+__pycache__/
 *.pyc
 *.pyo
+
+build/
+dist/
+*.egg-info/
 
 *.xml
 
