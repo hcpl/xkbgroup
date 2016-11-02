@@ -1,6 +1,10 @@
+import os
+import sys
+
 from argparse import ArgumentParser
 
 from .core import XKeyboard
+from .version import print_version
 
 
 GET_CHOICES = ["num", "name", "symbol", "variant",
@@ -35,10 +39,13 @@ def xkb_set(args, xkb):
 
     setattr(xkb, attrmap[args.attribute], value)
 
+
 def create_argument_parser():
     parser = ArgumentParser()
+
+    parser.add_argument("-V", "--version", action="store_true")
     subparsers = parser.add_subparsers(title="actions", dest="cmd")
-    subparsers.required = True
+    #subparsers.required = True
 
     parser_get = subparsers.add_parser("get")
     parser_get.set_defaults(func=xkb_get)
@@ -53,10 +60,19 @@ def create_argument_parser():
 
 def main():
     xkb = XKeyboard()
+    progname = os.path.basename(sys.argv[0])
 
     parser = create_argument_parser()
     args = parser.parse_args()
-    args.func(args, xkb)
+    if args.version:
+        print_version(progname)
+    elif args.cmd:
+        args.func(args, xkb)
+    else:
+        parser.print_usage(sys.stderr)
+        parser.exit(2, "{prog}: error: {message}\n".format(
+            prog=progname,
+            message="the following arguments are required: cmd"))
 
 if __name__ == '__main__':
     main()

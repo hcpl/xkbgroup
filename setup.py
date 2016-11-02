@@ -2,10 +2,12 @@
 
 from setuptools import setup
 
+from xkbgroup.version import VERSION
+
 
 setup(
     name="xkbgroup",
-    version="0.1.1",
+    version=VERSION,
     description="Query and change XKB layout state",
     author="Nguyen Duc My",
     author_email="hcpl.prog@gmail.com",
