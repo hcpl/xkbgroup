@@ -58,8 +58,9 @@ def _ensure_type(obj, type):
         raise ValueError("Wrong value type, must be {}.".format(str(type)))
 
 
-GroupData = namedtuple("GroupData", ["num", "name", "symbol", "variant"])
-GroupData.__doc__ = """Contains all data about the specific group."""
+# Both Python 3.2+ compatible and more neat than assigning to __doc__
+class GroupData(namedtuple("GroupData", ["num", "name", "symbol", "variant"])):
+    """Contains all data about the specific group."""
 
 class XKeyboard:
     """The main class.
