@@ -58,6 +58,9 @@ def _ensure_type(obj, type):
         raise ValueError("Wrong value type, must be {}.".format(str(type)))
 
 
+GroupData = namedtuple("GroupData", ["num", "name", "symbol", "variant"])
+GroupData.__doc__ = """Contains all data about the specific group."""
+
 class XKeyboard:
     """The main class.
 
@@ -173,6 +176,20 @@ class XKeyboard:
     # Properties for all layouts
 
     @property
+    def groups_data(self):
+        """All data about all groups (get-only).
+
+        :getter: Returns all data about all groups
+        :type: list of GroupData
+        """
+        return [GroupData(num, name, symbol, variant)
+                for (num, name, symbol, variant)
+                in zip(range(self.groups_count),
+                       self.groups_names,
+                       self.groups_symbols,
+                       self.groups_variants)]
+
+    @property
     def groups_count(self):
         """Number of all groups (get-only).
 
@@ -220,6 +237,18 @@ class XKeyboard:
 
 
     # Properties and methods for current layout
+
+    @property
+    def group_data(self):
+        """All data about the current group (get-only).
+
+        :getter: Returns all data about the current group
+        :type: GroupData
+        """
+        return GroupData(self.group_num,
+                         self.group_name,
+                         self.group_symbol,
+                         self.group_variant)
 
     @property
     def group_num(self):
@@ -378,7 +407,7 @@ def _parse_symbols(symbols_str, non_symbols, default_index=0):
     return symboldata_list
 
 
-__all__ = ["XKeyboard", "X11Error"]
+__all__ = ["XKeyboard", "GroupData", "X11Error"]
 
 
 def print_xkeyboard(xkb):

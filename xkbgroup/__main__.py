@@ -9,10 +9,19 @@ from .core import XKeyboard
 from .version import print_version
 
 
-GET_CHOICES = ["num", "name", "symbol", "variant",
-               "count", "names", "symbols", "variants"]
+GET_CHOICES = ["num", "name", "symbol", "variant", "current_data",
+               "count", "names", "symbols", "variants", "all_data"]
 SET_CHOICES = ["num", "name", "symbol"]
 
+
+DATA_DEFAULT_FORMAT = "{num}: {symbol} - {name} - \"{variant}\""
+
+def format_group_data(group_data):
+    return DATA_DEFAULT_FORMAT.format(
+        num=group_data.num,
+        name=group_data.name,
+        symbol=group_data.symbol,
+        variant=group_data.variant)
 
 def xkb_get(args, xkb):
     attrmap = {
@@ -20,13 +29,19 @@ def xkb_get(args, xkb):
         "name": "group_name",
         "symbol": "group_symbol",
         "variant": "group_variant",
+        "current_data": "group_data",
         "count": "groups_count",
         "names": "groups_names",
         "symbols": "groups_symbols",
         "variants": "groups_variants",
+        "all_data": "groups_data",
     }
 
     value = getattr(xkb, attrmap[args.attribute])
+    if args.attribute == "all_data":
+        value = [format_group_data(data) for data in value]
+    elif args.attribute == "current_data":
+        value = format_group_data(value)
     value = "\n".join(value) if isinstance(value, list) else value
 
     print(value)
@@ -47,7 +62,6 @@ def create_argument_parser():
 
     parser.add_argument("-V", "--version", action="store_true")
     subparsers = parser.add_subparsers(title="actions", dest="cmd")
-    #subparsers.required = True
 
     parser_get = subparsers.add_parser("get")
     parser_get.set_defaults(func=xkb_get)
