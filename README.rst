@@ -87,6 +87,13 @@ Library usage
    ''
    >>> xkb.group_num
    0
+   >>> xkb.group_data
+   GroupData(num=0, name='English (US)', symbol='us', variant='')
+   >>> xkb.groups_data
+   [GroupData(num=0, name='English (US)', symbol='us', variant=''), Gro
+   upData(num=1, name='Russian', symbol='ru', variant=''), GroupData(nu
+   m=2, name='Ukrainian', symbol='ua', variant=''), GroupData(num=3, na
+   me='French', symbol='fr', variant='')]
    >>>
 
 
@@ -103,10 +110,12 @@ Command line features mapping
 ``xkb.group_symbol``                 ``xkbgroup get symbol``
 ``xkb.group_symbol = 'fr'``          ``xkbgroup set symbol 'fr'``
 ``xkb.group_variant``                ``xkbgroup get variant``
+``xkb.group_data``                   ``xkbgroup get current_data``
 ``xkb.groups_count``                 ``xkbgroup get count``
 ``xkb.groups_names``                 ``xkbgroup get names``
 ``xkb.groups_symbols``               ``xkbgroup get symbols``
 ``xkb.groups_variants``              ``xkbgroup get variants``
+``xkb.groups_data``                  ``xkbgroup get all_data``
 ===================================  ====================================
 
 
@@ -142,7 +151,9 @@ These all reside in ``xkbgroup/core.py``:
     + ``group_symbol`` — get/set current group symbol
       (e.g. ``us``, ``ru``, ``fr``).
     + ``group_variant`` — get (only) current group variant
-      (e.g. `` ``, ``dos``, ``latin9``)
+      (e.g. `` ``, ``dos``, ``latin9``).
+    + ``group_data`` — get (only) all data about the current group.
+      In fact, assembles all previous ``group_*`` values.
   - ``groups_*`` — properties for querying info about all groups set by
     ``setxkbmap``
 
@@ -150,6 +161,8 @@ These all reside in ``xkbgroup/core.py``:
     + ``groups_names`` — get names of all groups.
     + ``groups_symbols`` — get symbols of all groups.
     + ``groups_variants`` — get variants of all groups.
+    + ``groups_data`` — get all data about all groups
+      by assembling all previous ``groups_*`` values.
 
 * ``X11Error`` — an exception class, raised for errors on X server issues.
 
