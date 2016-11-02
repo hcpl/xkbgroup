@@ -62,6 +62,22 @@ def _ensure_type(obj, type):
 class GroupData(namedtuple("GroupData", ["num", "name", "symbol", "variant"])):
     """Contains all data about the specific group."""
 
+    def __format__(self, format_spec):
+        """If format_spec is not empty, use it as a format string in
+        format_spec.format(...) with keyword arguments named corresponding to
+        fields. Otherwise just return str(self).
+
+        :param format_spec: format specifier
+        :rtype: str
+        """
+        if len(format_spec) > 0:
+            return format_spec.format(
+                num=self.num,
+                name=self.name,
+                symbol=self.symbol,
+                variant=self.variant)
+        return str(self)
+
 class XKeyboard:
     """The main class.
 
@@ -330,6 +346,53 @@ class XKeyboard:
     # setxkbmap call time
 
 
+    # Formatting method (for the great goodness!)
+
+    def format(self, format_str):
+        """Returns a formatted version of format_str.
+        The only named replacement fields supported by this method and
+        their corresponding API calls are:
+
+        * {num}           group_num
+        * {name}          group_name
+        * {symbol}        group_symbol
+        * {variant}       group_variant
+        * {current_data}  group_data
+        * {nums}          groups_nums
+        * {names}         groups_names
+        * {symbols}       groups_symbols
+        * {variants}      groups_variants
+        * {all_data}      groups_data
+
+        Passing other replacement fields will result in raising exceptions.
+
+        :param format_str: a new style format string
+        :rtype: str
+        """
+        return format_str.format(**{
+            "num": self.group_num,
+            "name": self.group_name,
+            "symbol": self.group_symbol,
+            "variant": self.group_variant,
+            "current_data": self.group_data,
+            "count": self.groups_count,
+            "names": _ListProxy(self.groups_names),
+            "symbols": _ListProxy(self.groups_symbols),
+            "variants": _ListProxy(self.groups_variants),
+            "all_data": _ListProxy(self.groups_data)})
+
+    def __format__(self, format_spec):
+        """Handle format(xkb, format_spec) as xkb.format(format_spec) if
+        format_spec is not empty. Otherwise just return str(self)
+
+        :param format_spec: format specifier
+        :rtype: str
+        """
+        if len(format_spec) > 0:
+            return self.format(format_spec)
+        return str(self)
+
+
     # Private properties and methods
 
     @property
@@ -406,6 +469,34 @@ def _parse_symbols(symbols_str, non_symbols, default_index=0):
     assert len(indices) == len(set(indices))    # No doubles
 
     return symboldata_list
+
+
+_COLON_SEPARATOR_REGEX = re.compile(r"(?<!\\):")
+
+class _ListProxy:
+    def __init__(self, list):
+        self._list = list
+
+    def __format__(self, format_spec):
+        if len(format_spec) > 0:
+            spec_parts = _COLON_SEPARATOR_REGEX.split(format_spec)
+            spec_parts = [s.replace("\\:", ":") for s in spec_parts]
+            assert len(spec_parts) > 0
+
+            elem_spec = spec_parts[0]
+            elems_formatted = [format(x, elem_spec) for x in self._list]
+
+            if len(spec_parts) == 1:
+                assert len(elem_spec) > 0
+                return str(elems_formatted)
+            elif len(spec_parts) == 2:
+                sep = spec_parts[1]
+                return sep.join(elems_formatted)
+            else:
+                raise ValueError(
+                    "Too many specifiers: \"{}\"".format(format_spec))
+            #return format_spec.join(str(x) for x in self._list)
+        return str(self._list)
 
 
 __all__ = ["XKeyboard", "GroupData", "X11Error"]

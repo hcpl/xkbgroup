@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import codecs
 import os
 import sys
 
@@ -56,6 +57,10 @@ def xkb_set(args, xkb):
 
     setattr(xkb, attrmap[args.attribute], value)
 
+def xkb_format(args, xkb):
+    unescaped_format_str = codecs.decode(args.format_string, "unicode_escape")
+    print(xkb.format(unescaped_format_str), end="")
+
 
 def create_argument_parser():
     parser = ArgumentParser()
@@ -71,6 +76,10 @@ def create_argument_parser():
     parser_set.set_defaults(func=xkb_set)
     parser_set.add_argument("attribute", choices=SET_CHOICES)
     parser_set.add_argument("value")
+
+    parser_format = subparsers.add_parser("format")
+    parser_format.set_defaults(func=xkb_format)
+    parser_format.add_argument("format_string")
 
     return parser
 
