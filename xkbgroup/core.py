@@ -383,7 +383,7 @@ class XKeyboard:
 
     def __format__(self, format_spec):
         """Handle format(xkb, format_spec) as xkb.format(format_spec) if
-        format_spec is not empty. Otherwise just return str(self)
+        format_spec is not empty. Otherwise just return str(self).
 
         :param format_spec: format specifier
         :rtype: str

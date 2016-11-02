@@ -4,7 +4,7 @@
     xkbgroup.version
     ~~~~~~~~~~~~~~~~
 
-    This modules collects all version-related utilities.
+    This module collects all version-related utilities.
 
     Global variables:
     * VERSION: current version of this library.
@@ -17,7 +17,7 @@
 """
 
 
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 
 def print_version(progname):
     """Prints the version along with the specified program name."""
