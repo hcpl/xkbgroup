@@ -1,3 +1,21 @@
+# -*- coding: utf-8 -*-
+
+"""
+    xkbgroup.core
+    ~~~~~~~~~~~~~
+
+    This module implements the XKeyboard API.
+
+    Classes:
+    * XKeyboard: the main class.
+
+    Exceptions:
+    * X11Error: raised for errors on X server issues.
+
+    :copyright: (c) 2016 by Nguyen Duc My.
+    :license: MIT, see LICENSE for more details.
+"""
+
 import re
 import sys
 
@@ -33,7 +51,7 @@ GET_NAMES_ERRORS = {
 }
 
 class X11Error(Exception):
-    pass
+    """Exception class, raised for errors on X server issues."""
 
 def _ensure_type(obj, type):
     if not isinstance(obj, type):
@@ -41,13 +59,58 @@ def _ensure_type(obj, type):
 
 
 class XKeyboard:
+    """The main class.
+
+    Usage examples:
+
+      # Assume we have the following configuration
+      $ setxkbmap -layout us,ru,ua,fr
+      $ python
+      >>> from xkbgroup import XKeyboard
+      >>> xkb = XKeyboard()
+      >>> xkb.group_num
+      1
+      >>> xkb.group_num = 2
+      >>> xkb.group_num
+      2
+      >>> xkb.group_num -= 2
+      >>> xkb.group_num
+      0
+      >>> xkb.group_name
+      English (US)
+      >>> xkb.group_name = 'Ukrainian'
+      >>> xkb.group_name
+      Ukrainian
+      >>> xkb.group_num
+      2
+      >>> xkb.group_symbol
+      ua
+      >>> xkb.group_symbol = 'fr'
+      >>> xkb.group_symbol
+      fr
+      >>> xkb.group_variant
+      ''
+      >>> xkb.group_num -= 3
+      >>> xkb.group_variant
+      ''
+      >>> xkb.group_num
+      0
+      >>>
+    """
+
     # Main methods
 
     def __init__(self, auto_open=True):
+        """
+        :param auto_open: If True automatically call open_display().
+        """
         if auto_open:
             self.open_display()
 
     def open_display(self):
+        """Establishes connection with X server and prepares objects
+        necessary to retrieve and send data.
+        """
         self.close_display()    # Properly finish previous open_display()
 
         XkbIgnoreExtension(False)
@@ -82,6 +145,9 @@ class XKeyboard:
             raise X11Error(GET_NAMES_ERRORS[status] + ".")
 
     def close_display(self):
+        """Closes connection with X server and cleans up objects
+        created on open_display().
+        """
         if hasattr(self, "_keyboard_description") and self._keyboard_description:
             names_mask = XkbSymbolsNameMask | XkbGroupNamesMask
             XkbFreeNames(self._keyboard_description, names_mask, True)
@@ -108,6 +174,11 @@ class XKeyboard:
 
     @property
     def groups_count(self):
+        """Number of all groups (get-only).
+
+        :getter: Returns number of all groups
+        :type: int
+        """
         if self._keyboard_description.contents.ctrls is not None:
             return self._keyboard_description.contents.ctrls.contents.num_groups
         else:
@@ -122,14 +193,29 @@ class XKeyboard:
 
     @property
     def groups_names(self):
+        """Names of all groups (get-only).
+
+        :getter: Returns names of all groups
+        :type: list of str
+        """
         return [self._get_group_name_by_num(i) for i in range(self.groups_count)]
 
     @property
     def groups_symbols(self):
+        """Symbols of all groups (get-only).
+
+        :getter: Returns symbols of all groups
+        :type: list of str
+        """
         return [symdata.symbol for symdata in self._symboldata_list]
 
     @property
     def groups_variants(self):
+        """Variants of all groups (get-only).
+
+        :getter: Returns variants of all groups
+        :type: list of str
+        """
         return [symdata.variant or "" for symdata in self._symboldata_list]
 
 
@@ -137,6 +223,12 @@ class XKeyboard:
 
     @property
     def group_num(self):
+        """Current group number.
+
+        :getter: Returns current group number
+        :setter: Sets current group number
+        :type: int
+        """
         xkb_state = XkbStateRec()
         XkbGetState(self._display, XkbUseCoreKbd, byref(xkb_state))
         return xkb_state.group
@@ -153,6 +245,12 @@ class XKeyboard:
 
     @property
     def group_name(self):
+        """Current group full name.
+
+        :getter: Returns current group name
+        :setter: Sets current group name
+        :type: str
+        """
         return self._get_group_name_by_num(self.group_num)
 
     @group_name.setter
@@ -168,6 +266,12 @@ class XKeyboard:
 
     @property
     def group_symbol(self):
+        """Current group symbol.
+
+        :getter: Returns current group symbol
+        :setter: Sets current group symbol
+        :type: str
+        """
         s_mapping = {symdata.index: symdata.symbol for symdata in self._symboldata_list}
         return s_mapping[self.group_num]
 
@@ -183,6 +287,11 @@ class XKeyboard:
 
     @property
     def group_variant(self):
+        """Current group variant (get-only).
+
+        :getter: Returns current group variant
+        :type: str
+        """
         v_mapping = {symdata.index: symdata.variant for symdata in self._symboldata_list}
         return v_mapping[self.group_num] or ""
 

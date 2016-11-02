@@ -24,6 +24,7 @@ sed -i 's/\( = [0-9]\+\)L/\1/g' xkb.py
 
 # Write this script's contents for reference
 
-(sed 's/\(.*\)/# \1/; s/# $/#/' "$0"; echo; cat xkb.py) > tmp
+(echo '# -*- coding: utf-8 -*-'; echo;
+ sed 's/\(.*\)/# \1/; s/# $/#/' "$0"; echo; cat xkb.py) > tmp
 mv tmp xkbgroup/xkb.py
 rm xkb.py
