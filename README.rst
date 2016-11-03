@@ -94,29 +94,84 @@ Library usage
    upData(num=1, name='Russian', symbol='ru', variant=''), GroupData(nu
    m=2, name='Ukrainian', symbol='ua', variant=''), GroupData(num=3, na
    me='French', symbol='fr', variant='')]
+   >>> xkb.format('{num} => {symbol}')
+   '0 => us'
+   >>> xkb.group_num = 1
+   >>> xkb.format('{num} => {symbol}')
+   '1 => ru'
+   >>> xkb.group_num = 3
+   >>> xkb.format('{num}: {symbol} - {name} "{variant}"')
+   '3: fr - French ""'
+   >>> xkb.format('{count}')
+   '4'
+   >>> xkb.format('{names}')
+   "['English (US)', 'Russian', 'Ukrainian', 'French']"
+   >>> xkb.format('{names::}')
+   'English (US)RussianUkrainianFrench'
+   >>> xkb.format('{names:: - }')
+   'English (US) - Russian - Ukrainian - French'
+   >>> xkb.format('{symbols:: - }')
+   'us - ru - ua - fr'
+   >>> xkb.format('{symbols:s: - }')
+   'us - ru - ua - fr'
+   >>> xkb.format('{all_data}')
+   "[GroupData(num=0, name='English (US)', symbol='us', variant=''), Gr
+   oupData(num=1, name='Russian', symbol='ru', variant=''), GroupData(n
+   um=2, name='Ukrainian', symbol='ua', variant=''), GroupData(num=3, n
+   ame='French', symbol='fr', variant='')]"
+   >>> xkb.format('{all_data:{{num}}}')
+   "['0', '1', '2', '3']"
+   >>> xkb.format('{all_data:/* {{name}} */}')
+   "['/* English (US) */', '/* Russian */', '/* Ukrainian */', '/* French */']"
+   >>> xkb.format('{all_data:{{symbol}}:\n}')
+   'us\nru\nua\nfr'
+   >>> print(xkb.format('{all_data:{{symbol}}:\n}'))
+   us
+   ru
+   ua
+   fr
+   >>> print(xkb.format('{all_data:{{num}}\\: {{symbol}} - {{name}} - "{{variant}}":\n}'))
+   0: us - English (US) - ""
+   1: ru - Russian - ""
+   2: ua - Ukrainian - ""
+   3: fr - French - ""
    >>>
 
 
 Command line features mapping
 -----------------------------
 
-===================================  ====================================
-              Library                            Command line
-===================================  ====================================
-``xkb.group_num``                    ``xkbgroup get num``
-``xkb.group_num = 2``                ``xkbgroup set num 2``
-``xkb.group_name``                   ``xkbgroup get name``
-``xkb.group_name = 'English (US)'``  ``xkbgroup set name 'English (US)'``
-``xkb.group_symbol``                 ``xkbgroup get symbol``
-``xkb.group_symbol = 'fr'``          ``xkbgroup set symbol 'fr'``
-``xkb.group_variant``                ``xkbgroup get variant``
-``xkb.group_data``                   ``xkbgroup get current_data``
-``xkb.groups_count``                 ``xkbgroup get count``
-``xkb.groups_names``                 ``xkbgroup get names``
-``xkb.groups_symbols``               ``xkbgroup get symbols``
-``xkb.groups_variants``              ``xkbgroup get variants``
-``xkb.groups_data``                  ``xkbgroup get all_data``
-===================================  ====================================
++----------+-------------------------------------+--------------------------------------+
+| Category |               Library               |            Command line              |
++==========+=====================================+======================================+
+| Get      | ``xkb.group_num``                   | ``xkbgroup get num``                 |
+|          +-------------------------------------+--------------------------------------+
+|          | ``xkb.group_name``                  | ``xkbgroup get name``                |
+|          +-------------------------------------+--------------------------------------+
+|          | ``xkb.group_symbol``                | ``xkbgroup get symbol``              |
+|          +-------------------------------------+--------------------------------------+
+|          | ``xkb.group_variant``               | ``xkbgroup get variant``             |
+|          +-------------------------------------+--------------------------------------+
+|          | ``xkb.group_data``                  | ``xkbgroup get current_data``        |
+|          +-------------------------------------+--------------------------------------+
+|          | ``xkb.groups_count``                | ``xkbgroup get count``               |
+|          +-------------------------------------+--------------------------------------+
+|          | ``xkb.groups_names``                | ``xkbgroup get names``               |
+|          +-------------------------------------+--------------------------------------+
+|          | ``xkb.groups_symbols``              | ``xkbgroup get symbols``             |
+|          +-------------------------------------+--------------------------------------+
+|          | ``xkb.groups_variants``             | ``xkbgroup get variants``            |
+|          +-------------------------------------+--------------------------------------+
+|          | ``xkb.groups_data``                 | ``xkbgroup get all_data``            |
++----------+-------------------------------------+--------------------------------------+
+| Set      | ``xkb.group_num = 2``               | ``xkbgroup set num 2``               |
+|          +-------------------------------------+--------------------------------------+
+|          | ``xkb.group_name = 'English (US)'`` | ``xkbgroup set name 'English (US)'`` |
+|          +-------------------------------------+--------------------------------------+
+|          | ``xkb.group_symbol = 'fr'``         | ``xkbgroup set symbol 'fr'``         |
++----------+-------------------------------------+--------------------------------------+
+| Format   | ``xkb.format('format_str')``        | ``xkbgroup format 'format_str'``     |
++----------+-------------------------------------+--------------------------------------+
 
 
 Naming convention
@@ -136,7 +191,7 @@ These all reside in ``xkbgroup/core.py``:
 
 * ``XKeyboard`` — the main class:
 
-  - ``__init__(self, auto_open=True)`` — if ``auto_open`` is ``True``
+  - ``__init__(self, auto_open=True)`` — if ``auto_open`` is ``True`` then
     automatically call ``open_display()``.
   - ``open_display()`` — establishes connection with X server and prepares
     objects necessary to retrieve and send data.
@@ -163,6 +218,9 @@ These all reside in ``xkbgroup/core.py``:
     + ``groups_variants`` — get variants of all groups.
     + ``groups_data`` — get all data about all groups
       by assembling all previous ``groups_*`` values.
+
+  - ``format()`` — obtain a formatted output, see `<docs/formatting.rst>`_
+    for details.
 
 * ``X11Error`` — an exception class, raised for errors on X server issues.
 
