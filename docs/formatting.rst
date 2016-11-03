@@ -1,6 +1,18 @@
+==========
+Formatting
+==========
+
+
+Simple formatting
+=================
+
+Just use replacement strings listed in the table_.
+
+
 Advanced formatting
 ===================
 
+.. _table:
 
 ==================  ======================
 Replacement string           Type
@@ -27,13 +39,16 @@ Replacement string           Type
 |int|
 +++++
 
-See `Format Specification Mini-Language <https://docs.python.org/3/library/string.html#formatspec>`__
+See |formatspec|_
 
 
 |str|
 +++++
 
-See `Format Specification Mini-Language <https://docs.python.org/3/library/string.html#formatspec>`__
+See |formatspec|_
+
+.. |formatspec| replace:: Format Specification Mini-Language
+.. _formatspec: https://docs.python.org/3/library/string.html#formatspec
 
 
 |list_of_str|
