@@ -16,6 +16,7 @@
     :license: MIT, see LICENSE for more details.
 """
 
+import os
 import re
 import sys
 
@@ -28,17 +29,20 @@ from .xkb import *
 # Error-related utilities
 
 OPEN_DISPLAY_ERRORS = {
-    XkbOD_BadLibraryVersion: "Compile-time and runtime XKB libraries not compatible",
-    XkbOD_ConnectionRefused: "Display could not be opened",
-    XkbOD_BadServerVersion: "Library and server have incompatible XKB versions",
-    XkbOD_NonXkbServer: "XKB not present in the X server"
+    XkbOD_BadLibraryVersion: "{libname} uses XKB version {used_major}.{used_minor}\n"
+                             "Xlib supports incompatible version {found_major}.{found_minor}",
+    XkbOD_ConnectionRefused: "Cannon open display \"{display_name}\"",
+    XkbOD_BadServerVersion: "{libname} uses XKB version {used_major}.{used_minor}\n"
+                            "Server \"{display_name}\" uses incompatible version "
+                                "{found_major}.{found_minor}",
+    XkbOD_NonXkbServer: "XKB extension not present on \"{display_name}\"",
 }
 
 GET_CONTROLS_ERRORS = {
     BadAlloc: "Unable to allocate storage",
     BadImplementation: "Invalid reply from server",
     BadMatch: "A compatible version of Xkb was not available in the server or "
-              "an argument has correct type and range, but is otherwise invalid"
+              "an argument has correct type and range, but is otherwise invalid",
 }
 
 GET_NAMES_ERRORS = {
@@ -47,7 +51,7 @@ GET_NAMES_ERRORS = {
     BadLength: "The length of a request is shorter or longer than that "
                "required to minimally contain the arguments",
     BadMatch: "A compatible version of Xkb was not available in the server or "
-              "an argument has correct type and range, but is otherwise invalid"
+              "an argument has correct type and range, but is otherwise invalid",
 }
 
 class X11Error(Exception):
@@ -143,8 +147,21 @@ class XKeyboard:
         self._display = XkbOpenDisplay(
             display_name,
             None, None, byref(major), byref(minor), byref(reason))
-        if reason.value in OPEN_DISPLAY_ERRORS:
-            raise X11Error(OPEN_DISPLAY_ERRORS[reason.value] + ".")
+        if not self._display:
+            if reason.value in OPEN_DISPLAY_ERRORS:
+                # Assume POSIX conformance
+                display_name = os.getenv("DISPLAY") or "default"
+
+                raise X11Error(OPEN_DISPLAY_ERRORS[reason.value].format(
+                    libname="xkbgroup",
+                    used_major=XkbMajorVersion,
+                    used_minor=XkbMinorVersion,
+                    found_major=major.value,
+                    found_minor=minor.value,
+                    display_name=display_name)
+                        + ".")
+            else:
+                raise X11Error("Unknown error {} from XkbOpenDisplay.".format(reason.value))
 
         self._keyboard_description = XkbGetMap(self._display, 0, XkbUseCoreKbd)
         if not self._keyboard_description:
