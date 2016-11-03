@@ -21,7 +21,7 @@ import re
 import sys
 
 from ctypes import *
-from collections import namedtuple
+from collections import UserList, namedtuple
 
 from .xkb import *
 
@@ -216,12 +216,12 @@ class XKeyboard:
         :getter: Returns all data about all groups
         :type: list of GroupData
         """
-        return [GroupData(num, name, symbol, variant)
-                for (num, name, symbol, variant)
-                in zip(range(self.groups_count),
-                       self.groups_names,
-                       self.groups_symbols,
-                       self.groups_variants)]
+        return _ListProxy(GroupData(num, name, symbol, variant)
+                          for (num, name, symbol, variant)
+                          in zip(range(self.groups_count),
+                                 self.groups_names,
+                                 self.groups_symbols,
+                                 self.groups_variants))
 
     @property
     def groups_count(self):
@@ -249,7 +249,7 @@ class XKeyboard:
         :getter: Returns names of all groups
         :type: list of str
         """
-        return [self._get_group_name_by_num(i) for i in range(self.groups_count)]
+        return _ListProxy(self._get_group_name_by_num(i) for i in range(self.groups_count))
 
     @property
     def groups_symbols(self):
@@ -258,7 +258,7 @@ class XKeyboard:
         :getter: Returns symbols of all groups
         :type: list of str
         """
-        return [symdata.symbol for symdata in self._symboldata_list]
+        return _ListProxy(symdata.symbol for symdata in self._symboldata_list)
 
     @property
     def groups_variants(self):
@@ -267,7 +267,7 @@ class XKeyboard:
         :getter: Returns variants of all groups
         :type: list of str
         """
-        return [symdata.variant or "" for symdata in self._symboldata_list]
+        return _ListProxy(symdata.variant or "" for symdata in self._symboldata_list)
 
 
     # Properties and methods for current layout
@@ -393,10 +393,10 @@ class XKeyboard:
             "variant": self.group_variant,
             "current_data": self.group_data,
             "count": self.groups_count,
-            "names": _ListProxy(self.groups_names),
-            "symbols": _ListProxy(self.groups_symbols),
-            "variants": _ListProxy(self.groups_variants),
-            "all_data": _ListProxy(self.groups_data)})
+            "names": self.groups_names,
+            "symbols": self.groups_symbols,
+            "variants": self.groups_variants,
+            "all_data": self.groups_data})
 
     def __format__(self, format_spec):
         """Handle format(xkb, format_spec) as xkb.format(format_spec) if
@@ -490,10 +490,7 @@ def _parse_symbols(symbols_str, non_symbols, default_index=0):
 
 _COLON_SEPARATOR_REGEX = re.compile(r"(?<!\\):")
 
-class _ListProxy:
-    def __init__(self, list):
-        self._list = list
-
+class _ListProxy(UserList):
     def __format__(self, format_spec):
         if len(format_spec) > 0:
             spec_parts = _COLON_SEPARATOR_REGEX.split(format_spec)
@@ -501,7 +498,7 @@ class _ListProxy:
             assert len(spec_parts) > 0
 
             elem_spec = spec_parts[0]
-            elems_formatted = [format(x, elem_spec) for x in self._list]
+            elems_formatted = [format(x, elem_spec) for x in self.data]
 
             if len(spec_parts) == 1:
                 assert len(elem_spec) > 0
@@ -512,8 +509,8 @@ class _ListProxy:
             else:
                 raise ValueError(
                     "Too many specifiers: \"{}\"".format(format_spec))
-            #return format_spec.join(str(x) for x in self._list)
-        return str(self._list)
+
+        return str(self.data)
 
 
 __all__ = ["XKeyboard", "GroupData", "X11Error"]
