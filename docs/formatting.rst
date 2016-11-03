@@ -2,58 +2,62 @@ Advanced formatting
 ===================
 
 
-* ``{num}`` int_
-* ``{name}`` str_
-* ``{symbol}`` str_
-* ``{variant}`` str_
-* ``{current_data}`` group_data_
-* ``{count}`` int_
-* ``{names}`` list_of_str_
-* ``{symbols}`` list_of_str_
-* ``{variants}`` list_of_str_
-* ``{all_data}`` list_of_group_data_
+==================  ======================
+Replacement string           Type
+==================  ======================
+``{num}``           |int|_
+``{name}``          |str|_
+``{symbol}``        |str|_
+``{variant}``       |str|_
+``{current_data}``  |group_data|_
+``{count}``         |int|_
+``{names}``         |list_of_str|_
+``{symbols}``       |list_of_str|_
+``{variants}``      |list_of_str|_
+``{all_data}``      |list_of_group_data|_
+==================  ======================
+
+.. |int| replace:: ``int``
+.. |str| replace:: ``str``
+.. |group_data| replace:: ``GroupData``
+.. |list_of_str| replace:: ``list`` of ``str``
+.. |list_of_group_data| replace:: ``list`` of ``GroupData``
 
 
-``int``
-+++++++
+|int|
++++++
 
 See `Format Specification Mini-Language <https://docs.python.org/3/library/string.html#formatspec>`__
 
 
-``str``
-+++++++
+|str|
++++++
 
 See `Format Specification Mini-Language <https://docs.python.org/3/library/string.html#formatspec>`__
 
 
-.. _list_of_str:
-
-``list`` of ``str``
-+++++++++++++++++++
-
-    | ``format_spec ::= [str_format_spec][:[join_str]]``
-
-    | ``str_format_spec`` — str_
-    | ``join_str`` — ``str`` used to join list elements
-
-
-.. _group_data:
-
-``GroupData``
+|list_of_str|
 +++++++++++++
 
-    | ``format_spec ::= [format_str]``
+| ``format_spec ::= [str_format_spec][:[join_str]]``
 
-    | ``format_str`` — arbitrary format string, where the only replacent
-      strings are ``{num}``, ``{name}``, ``{symbol}`` and ``{variant}``.
+| ``str_format_spec`` — str_
+| ``join_str`` — ``str`` used to join list elements
 
 
-.. _list_of_group_data:
+|group_data|
++++++++++++++
 
-``list`` of ``GroupData``
-+++++++++++++++++++++++++
+| ``format_spec ::= [format_str]``
 
-    | ``format_spec ::= [group_data_format_spec][:[join_str]]``
+| ``format_str`` — arbitrary format string, where the only replacement
+  strings are ``{num}``, ``{name}``, ``{symbol}`` and ``{variant}``.
 
-    | ``group_data_format_spec`` — group_data_
-    | ``join_str`` — ``str`` used to join list elements
+
+|list_of_group_data|
+++++++++++++++++++++
+
+| ``format_spec ::= [group_data_format_spec][:[join_str]]``
+
+| ``group_data_format_spec`` — |group_data|_
+| ``join_str`` — ``str`` used to join list elements
