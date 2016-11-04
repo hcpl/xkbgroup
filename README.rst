@@ -90,10 +90,9 @@ Library usage
    >>> xkb.group_data
    GroupData(num=0, name='English (US)', symbol='us', variant='')
    >>> xkb.groups_data
-   [GroupData(num=0, name='English (US)', symbol='us', variant=''), Gro
-   upData(num=1, name='Russian', symbol='ru', variant=''), GroupData(nu
-   m=2, name='Ukrainian', symbol='ua', variant=''), GroupData(num=3, na
-   me='French', symbol='fr', variant='')]
+   [GroupData(num=0, name='English (US)', symbol='us', variant=''), GroupData(num=1, name=
+   'Russian', symbol='ru', variant=''), GroupData(num=2, name='Ukrainian', symbol='ua', va
+   riant=''), GroupData(num=3, name='French', symbol='fr', variant='')]
    >>> xkb.format('{num} => {symbol}')
    '0 => us'
    >>> xkb.group_num = 1
@@ -115,10 +114,9 @@ Library usage
    >>> xkb.format('{symbols:s: - }')
    'us - ru - ua - fr'
    >>> xkb.format('{all_data}')
-   "[GroupData(num=0, name='English (US)', symbol='us', variant=''), Gr
-   oupData(num=1, name='Russian', symbol='ru', variant=''), GroupData(n
-   um=2, name='Ukrainian', symbol='ua', variant=''), GroupData(num=3, n
-   ame='French', symbol='fr', variant='')]"
+   "[GroupData(num=0, name='English (US)', symbol='us', variant=''), GroupData(num=1, name
+   ='Russian', symbol='ru', variant=''), GroupData(num=2, name='Ukrainian', symbol='ua', v
+   ariant=''), GroupData(num=3, name='French', symbol='fr', variant='')]"
    >>> xkb.format('{all_data:{{num}}}')
    "['0', '1', '2', '3']"
    >>> xkb.format('{all_data:/* {{name}} */}')
