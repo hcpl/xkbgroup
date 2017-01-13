@@ -122,12 +122,22 @@ class XKeyboard:
       >>>
     """
 
+    # Fields with default values
+
+    non_symbols = {"pc", "inet", "group", "terminate"}
+
+
     # Main methods
 
-    def __init__(self, auto_open=True):
+    def __init__(self, auto_open=True, non_symbols=None):
         """
-        :param auto_open: If True automatically call open_display().
+        :param auto_open: if True automatically call open_display().
+        :param non_symbols: either iterable of string non-symbol names or
+                            None to use the default set of non-symbol names.
         """
+        if non_symbols:
+            self.non_symbols = non_symbols
+
         if auto_open:
             self.open_display()
 
@@ -425,7 +435,7 @@ class XKeyboard:
         symbol_str_atom = self._symbols_source
         if symbol_str_atom != None_:
             b_symbol_str = XGetAtomName(self._display, symbol_str_atom)
-            return _parse_symbols(b_symbol_str.decode(), ["pc", "inet", "group"])
+            return _parse_symbols(b_symbol_str.decode(), self.non_symbols)
         else:
             raise X11Error("Failed to get symbol names.")
 
