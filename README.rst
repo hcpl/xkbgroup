@@ -166,9 +166,9 @@ Command line features mapping
 |          +-------------------------------------+--------------------------------------+
 |          | ``xkb.group_name = 'English (US)'`` | ``xkbgroup set name 'English (US)'`` |
 |          +-------------------------------------+--------------------------------------+
-|          | ``xkb.group_symbol = 'fr'``         | ``xkbgroup set symbol 'fr'``         |
+|          | ``xkb.group_symbol = 'fr'``         | ``xkbgroup set symbol fr``           |
 +----------+-------------------------------------+--------------------------------------+
-| Format   | ``xkb.format('format_str')``        | ``xkbgroup format 'format_str'``     |
+| Format   | ``xkb.format('{format_str}')``      | ``xkbgroup format '{format_str}'``   |
 +----------+-------------------------------------+--------------------------------------+
 
 
@@ -189,8 +189,12 @@ These all reside in ``xkbgroup/core.py``:
 
 * ``XKeyboard`` — the main class:
 
-  - ``__init__(self, auto_open=True)`` — if ``auto_open`` is ``True`` then
-    automatically call ``open_display()``.
+  - ``__init__(self, auto_open=True, non_symbols=None)``:
+
+    + ``auto_open`` — if ``True`` then automatically call ``open_display()``
+      on initialization.
+    + ``non_symbols`` — either iterable of string non-symbol names or None to
+      use the default set of non-symbol names.
   - ``open_display()`` — establishes connection with X server and prepares
     objects necessary to retrieve and send data.
   - ``close_display()`` — closes connection with X server and cleans up
@@ -208,7 +212,7 @@ These all reside in ``xkbgroup/core.py``:
     + ``group_data`` — get (only) all data about the current group.
       In fact, assembles all previous ``group_*`` values.
   - ``groups_*`` — properties for querying info about all groups set by
-    ``setxkbmap``
+    ``setxkbmap``:
 
     + ``groups_count`` — get number of all groups.
     + ``groups_names`` — get names of all groups.
