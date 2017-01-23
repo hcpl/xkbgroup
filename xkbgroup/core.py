@@ -31,7 +31,7 @@ from .xkb import *
 OPEN_DISPLAY_ERRORS = {
     XkbOD_BadLibraryVersion: "{libname} uses XKB version {used_major}.{used_minor}\n"
                              "Xlib supports incompatible version {found_major}.{found_minor}",
-    XkbOD_ConnectionRefused: "Cannon open display \"{display_name}\"",
+    XkbOD_ConnectionRefused: "Cannot open display \"{display_name}\"",
     XkbOD_BadServerVersion: "{libname} uses XKB version {used_major}.{used_minor}\n"
                             "Server \"{display_name}\" uses incompatible version "
                                 "{found_major}.{found_minor}",
@@ -202,7 +202,7 @@ class XKeyboard:
             XkbFreeClientMap(self._keyboard_description, 0, True)
             del self._keyboard_description
 
-        if hasattr(self, "display") and self._display:
+        if hasattr(self, "_display") and self._display:
             XCloseDisplay(self._display)
             del self._display
 
