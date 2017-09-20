@@ -7649,9 +7649,6 @@ realloc.argtypes = [c_void_p, size_t]
 free = _libraries['libX11.so.6'].free
 free.restype = None
 free.argtypes = [c_void_p]
-cfree = _libraries['libX11.so.6'].cfree
-cfree.restype = None
-cfree.argtypes = [c_void_p]
 valloc = _libraries['libX11.so.6'].valloc
 valloc.restype = c_void_p
 valloc.argtypes = [size_t]
@@ -9358,7 +9355,7 @@ __all__ = ['XUnlockDisplay', 'ETXTBSY', '_XEventToWire',
            'drand48', 'XkbNamesPtr', 'XkbCtrlsAction',
            'XkbPCF_AllFlagsMask', 'random_r', 'XGrabButton',
            'StaticGray', 'sz_xDeletePropertyReq', 'XkbLC_Hidden',
-           '__USE_POSIX199506', 'cfree', '__BIG_ENDIAN', 'srand',
+           '__USE_POSIX199506', '__BIG_ENDIAN', 'srand',
            'X_kbSetDeviceInfo', 'EACCES', 'MappingPointer',
            'XkbSelectEventDetails', 'XSetBackground',
            'GrabInvalidTime', 'sz_xGetMotionEventsReq',
