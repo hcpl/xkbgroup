@@ -124,7 +124,7 @@ class XKeyboard:
 
     # Fields with default values
 
-    non_symbols = {"pc", "inet", "group", "terminate"}
+    non_symbols = {"capslock", "pc", "inet", "group", "terminate"}
 
 
     # Main methods
@@ -493,7 +493,8 @@ def _parse_symbols(symbols_str, non_symbols, default_index=0):
             symboldata_list.append(symboldata)
 
     indices = [symdata.index for symdata in symboldata_list]
-    assert len(indices) == len(set(indices))    # No doubles
+    assert len(indices) == len(set(indices)), ("Duplicate index in %r" %
+                                               symboldata_list)
 
     return symboldata_list
 
