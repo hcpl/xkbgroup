@@ -451,7 +451,7 @@ class XKeyboard:
 SymbolData = namedtuple("SymbolData", ["symbol", "variant", "index"])
 SYMBOL_REGEX = re.compile(r"""
     (?P<symbol>\w+)
-    (?: \( (?P<variant>\w+) \) )?
+    (?: \( (?P<variant>\w+.*) \) )?
     (?: : (?P<index>\d+) )?
     """, re.VERBOSE)
 
@@ -484,7 +484,7 @@ def _parse_symbols(symbols_str, non_symbols, default_index=0):
                 match.group('variant'),
                 int(index) - 1 if index else default_index)
         else:
-            raise X11Error("Malformed symbol string: \"{}\"".format(symstr))
+            raise X11Error("Malformed symbol string: {!r}".format(symstr))
 
     symboldata_list = []
     for symstr in symbols_str.split('+'):
