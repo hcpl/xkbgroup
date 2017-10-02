@@ -124,7 +124,7 @@ class XKeyboard:
 
     # Fields with default values
 
-    non_symbols = {"capslock", "pc", "inet", "group", "terminate"}
+    non_symbols = {"capslock", "pc", "inet", "group", "terminate", "compose", "keypad"}
 
 
     # Main methods
