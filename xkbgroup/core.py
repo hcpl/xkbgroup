@@ -87,7 +87,7 @@ class GroupData(namedtuple("GroupData", ["num", "name", "symbol", "variant"])):
                 variant=self.variant)
         return str(self)
 
-class XKeyboard:
+class XKeyboard(object):
     """The main class.
 
     Usage examples:
@@ -339,7 +339,7 @@ class XKeyboard:
         try:
             self.group_num = n_mapping[value]
         except KeyError as exc:
-            raise ValueError("Wrong group name.")
+            raise ValueError("Wrong group name {!r}.".format(value))
 
 
     @property
@@ -360,7 +360,7 @@ class XKeyboard:
         try:
             self.group_num = s_mapping[value]
         except KeyError as exc:
-            raise ValueError("Wrong group symbol.")
+            raise ValueError("Wrong group symbol {!r}.".format(value))
 
 
     @property
@@ -489,7 +489,7 @@ def _parse_symbols(symbols_str, non_symbols, default_index=0):
                 match.group('variant'),
                 int(index) - 1 if index else default_index)
         else:
-            raise X11Error("Malformed symbol string: {!r}".format(symstr))
+            raise X11Error("Malformed symbol string: {!r}.".format(symstr))
 
     symboldata_list = []
     for symstr in symbols_str.split('+'):
