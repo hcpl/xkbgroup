@@ -21,7 +21,12 @@ import re
 import sys
 
 from ctypes import *
-from collections import UserList, namedtuple
+try:
+    from collections import UserList
+except ImportError:
+    from UserList import UserList
+
+from collections import namedtuple
 
 from .xkb import *
 
@@ -334,7 +339,7 @@ class XKeyboard:
         try:
             self.group_num = n_mapping[value]
         except KeyError as exc:
-            raise ValueError("Wrong group name.") from exc
+            raise ValueError("Wrong group name.")
 
 
     @property
@@ -355,7 +360,7 @@ class XKeyboard:
         try:
             self.group_num = s_mapping[value]
         except KeyError as exc:
-            raise ValueError("Wrong group symbol.") from exc
+            raise ValueError("Wrong group symbol.")
 
 
     @property
