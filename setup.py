@@ -6,15 +6,21 @@ from setuptools import setup
 from xkbgroup.version import VERSION
 
 
+def read_readme():
+    with open("README.rst") as f:
+        return f.read()
+
+
 setup(
     name="xkbgroup",
     version=VERSION,
     description="Query and change XKB layout state",
+    long_description=read_readme(),
     author="Nguyen Duc My",
     author_email="hcpl.prog@gmail.com",
     url="https://github.com/hcpl/xkbgroup",
     packages=["xkbgroup"],
-    package_data={"": ["LICENSE"]},
+    package_data={"": ["LICENSE", "README.rst", "generate_bindings.sh"]},
     license="MIT",
     zip_safe=True,
     classifiers=[
